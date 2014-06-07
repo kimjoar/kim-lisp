@@ -6,3 +6,95 @@
 
 ;; DIY -- Implement the rest of your standard library
 ;; here as part 7 of the workshop.
+
+(define or
+    (lambda (a b)
+        (if a
+            (if b #t #t)
+            (if b #t #f))))
+
+(define and
+    (lambda (a b)
+        (if a
+            (if b #t #f)
+            (if b #f #f))))
+
+(define xor
+    (lambda (a b)
+        (if a
+            (if b #f #t)
+            (if b #t #f))))
+
+(define >=
+    (lambda (a b)
+        (if (> a b)
+            #t
+            (if (= a b) #t #f))))
+
+(define <=
+    (lambda (a b)
+        (if (< a b)
+            #t
+            (if (= a b) #t #f))))
+
+(define sum
+    (lambda (xs)
+        (if xs
+            (+ (head xs) (sum (tail xs)))
+            0)))
+
+(define length
+    (lambda (xs)
+        (if xs
+            (+ 1 (length (tail xs)))
+            0)))
+
+(define append
+    (lambda (a b)
+        (if a
+            (cons (head a) (append (tail a) b))
+            b)))
+
+(define filter
+    (lambda (f xs)
+        (if (empty xs)
+            '()
+            (if (f (head xs))
+                (cons (head xs) (filter f (tail xs)))
+                (filter f (tail xs))))))
+
+(define map
+    (lambda (f xs)
+        (if (empty xs)
+            '()
+            (cons (f (head xs)) (map f (tail xs))))))
+
+(define reverse
+    (lambda (xs)
+        (if (empty xs)
+            '()
+            (append (reverse (tail xs)) (cons (head xs) '())))))
+
+(define range
+    (lambda (a b)
+        (if (<= a b)
+            (cons a (range (+ a 1) b))
+            '())))
+
+(define sm-or-eq
+    (lambda (pivot xs)
+        (filter (lambda (n) (<= n pivot)) xs)))
+
+(define lg
+    (lambda (pivot xs)
+        (filter (lambda (n) (> n pivot)) xs)))
+
+(define sort
+    (lambda (xs)
+        (if (empty xs)
+            '()
+            (append
+                (append (sort (sm-or-eq (head xs) (tail xs)))
+                    (cons (head xs) '()))
+                (sort (lg (head xs) xs))))))
+
